@@ -7,7 +7,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'mon': ['Montserrat']
+        'mon': ['Montserrat'],
+        'text':['Nosifer'] 
       }
     },
   },
