@@ -1,9 +1,10 @@
 import React from 'react'
+import SideBar from '../SideBar/SideBar'
 
 function HomePage() {
   return (
-    <div>
-      <h2>home</h2>
+    <div >
+   <SideBar className=" w-[250px]"/>
     </div>
   )
 }
