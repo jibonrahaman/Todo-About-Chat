@@ -11,6 +11,7 @@ import { Link} from 'react-router-dom';
 
 
 const LoginReg = () => {
+  const auth = getAuth();
 
   const  [loader,setLoader]=useState(false)
   const  [condition,setCondition]=useState(false)
@@ -35,22 +36,44 @@ const LoginReg = () => {
     setpassword1(e.target.value);
     setpasswordErr1('')
    }
-   const emailValid=/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-   const passwordValid=/^(?=.{8,})/
+  
+  
    const handleSignUp =()=>{
-    if(!email1){
-      toast.error("Enter your  Email")
-    }else if(!emailValid .test(email1)){
-      toast.error("Enter your Valid Email ")
-    }else if(!fullname){
-      toast.error("Enter your Name")
-    }else if (!password1){
-      toast.error("Enter Your Password")
-    }else if(!passwordValid.test(password1)){
-      toast.error("Please Give 8 Character Password")
+    if (!email1) {
+      toast.error("Please Enter Your Email");
+   } else {
+      if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email1)){
+        toast.error("Enter Your Valid Email")
+      }  
+   }
+   if (!fullname) {
+    toast.error("Please Enter Your FullName");
+ }
+ if (!password1) {
+    toast.error("Please Enter Your Password");
+ } else {
+    if (!/^(?=.{8,})/.test(password1)) {
+       toast.error("Please Enter 8 Character  Password");
     }
    }
-  
+
+
+   if(email1 && password1 && fullname && (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email1))){
+    createUserWithEmailAndPassword(auth, email1, password1 ).then(()=>{
+     
+    }).then(()=>{
+      toast.success("registration done please verify your email")
+    }) .catch((error) => {
+      console.log(error.code);
+   
+    });
+   }
+
+
+
+
+
+   }
 
    
    const  [active,setActive]=useState(false)
