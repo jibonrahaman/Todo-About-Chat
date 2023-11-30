@@ -8,6 +8,7 @@ import {
   RouterProvider
 } from "react-router-dom";
 import LoginReg from './pages/LoginReg';
+import HomePage from './pages/Home/HomePage';
 
 
 const router = createBrowserRouter(
@@ -17,11 +18,11 @@ const router = createBrowserRouter(
       path="/"
       element={<LoginReg />}>  
       </Route>
-    {/* <Route
-      path="/home"
-      element={<Home />}>  
-      </Route>
     <Route
+      path="/home"
+      element={<HomePage />}>  
+      </Route>
+    {/* <Route
       path="/forgetpassword"
       element={<ForgetPassword />}>  
       </Route> */}
