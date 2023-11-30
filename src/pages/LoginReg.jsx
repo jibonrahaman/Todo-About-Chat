@@ -61,11 +61,24 @@ const LoginReg = () => {
    if(email1 && password1 && fullname && (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email1))){
     createUserWithEmailAndPassword(auth, email1, password1 ).then(()=>{
      
-    }).then(()=>{
-      toast.success("registration done please verify your email")
-    }) .catch((error) => {
+    })
+    .then(()=>{
+      toast.success("registration done please verify your email")  
+      sendEmailVerification(auth.currentUser)
+      
+      setemail1('')
+      setfullname('')
+      setpassword1('')     
+      setTimeout(()=>{
+       setActive(false)
+          
+      },1500)
+    }) 
+    .catch((error) => {
       console.log(error.code);
-   
+    if(error.code.includes ("auth/email-already-in-use")){
+      toast.error("email already used")
+    }
     });
    }
 
@@ -118,10 +131,10 @@ const LoginReg = () => {
                 </div>
             </div>
             <p className='text-black text-sm font-normal font-mon pb-2'>or use your email for registeration</p>
-            <input onChange={handleEmail1}  className='w-full bg-[#EEEEEE] py-1.5 px-5 my-1.5 rounded ' type="text" placeholder='Email'/>
-            <input onChange={handleName}  className='w-full bg-[#EEEEEE] py-1.5 px-5 my-1.5 rounded ' type="text" placeholder='Name'/>
+            <input onChange={handleEmail1} value={email1}  className='w-full bg-[#EEEEEE] py-1.5 px-5 my-1.5 rounded ' type="text" placeholder='Email'/>
+            <input onChange={handleName} value={fullname}  className='w-full bg-[#EEEEEE] py-1.5 px-5 my-1.5 rounded ' type="text" placeholder='Name'/>
             <div className='relative w-full'>
-            <input onChange={handlePassword1} className='w-full bg-[#EEEEEE] py-1.5 px-5 my-1.5 rounded ' type={eye?"text":"password"} placeholder='Password'/>
+            <input onChange={handlePassword1} value={password1} className='w-full bg-[#EEEEEE] py-1.5 px-5 my-1.5 rounded ' type={eye?"text":"password"} placeholder='Password'/>
             {eye?
             <LuEyeOff onClick={handleEye2} className='absolute top-[17px] right-[20px] cursor-pointer text-[#9A9898] text-base '/>
             :
