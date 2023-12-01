@@ -30,7 +30,7 @@ function TodoAbout() {
                 </Flex>
              </Flex>
 
-             <Flex className=" items-center mt-4  gap-x-10 ">
+             <Flex className=" items-center  gap-x-10 ">
               <Flex className=" gap-x-5 items-center">
               <h2 className='text-white text-2xl'>posts Photo/Status</h2>
               <FallingLines
