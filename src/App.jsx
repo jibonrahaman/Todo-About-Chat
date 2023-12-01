@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import LoginReg from './pages/LoginReg';
 import HomePage from './pages/Home/HomePage';
+import Photos from './pages/PhotosPart/Photos';
 
 
 const router = createBrowserRouter(
@@ -21,6 +22,10 @@ const router = createBrowserRouter(
     <Route
       path="/home"
       element={<HomePage />}>  
+      </Route>
+       <Route
+      path="/photos"
+      element={<Photos />}>  
       </Route>
     {/* <Route
       path="/forgetpassword"

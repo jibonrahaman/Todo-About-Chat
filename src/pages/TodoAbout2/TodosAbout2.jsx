@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
 import Product from '../../assets/Product4.png'
-import Flex from '../../Components/Flex'
+
 import { MdOutlineClose } from "react-icons/md";
- import '../TodoAbout/TodoAbout.css'
+ import '../TodoAbout2/TodosAbout2.css'
  import { FaUpload } from "react-icons/fa";
  import { FallingLines } from 'react-loader-spinner'
+import Flex from '../../Components/Flex';
 import Post from '../PostPart/Post';
-function TodoAbout() {
+import Post2 from '../Post2/Post2';
+function TodosAbout2() {
   const [backdropShow,setbackdropShow] = useState(false)
   const [postImg,setpostImg]=useState(true)
   return (
@@ -30,7 +32,7 @@ function TodoAbout() {
                 </Flex>
              </Flex>
 
-             <Flex className=" items-center mt-4  gap-x-10 ">
+             {/* <Flex className=" items-center mt-4  gap-x-10 ">
               <Flex className=" gap-x-5 items-center">
               <h2 className='text-white text-2xl'>posts Photo/Status</h2>
               <FallingLines
@@ -47,11 +49,11 @@ function TodoAbout() {
         </Flex>
         <div className='border mt-2 border-[#37383a]'></div>
             </div>
-             </Flex>
-             <Post />
+             </Flex> */}
+             <Post2 />
              
                 {/* backdrop */}
-                    {
+                    {/* {
                       backdropShow && 
                       <section className='backdrop'>
                       <div className="absolute top-0 left-0 w-full h-screen z-10 backdrop-blur-sm flex justify-center items-center ">
@@ -97,7 +99,7 @@ function TodoAbout() {
                       </div>
                       </div>
                     </section>
-                    }
+                    } */}
                 {/* backdrop */}
             </div>
    
@@ -105,4 +107,4 @@ function TodoAbout() {
   )
 }
 
-export default TodoAbout
+export default TodosAbout2

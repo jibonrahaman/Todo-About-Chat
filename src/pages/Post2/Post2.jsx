@@ -5,7 +5,7 @@ import { SiImagej } from "react-icons/si";
 import { Link } from 'react-router-dom';
 import Photos from '../PhotosPart/Photos';
 
-function Post() {
+function Post2() {
   const [post,setpost]=useState(false);
   const [photos,setphotos]=useState(false);
   const handlePost =()=>{
@@ -17,14 +17,14 @@ function Post() {
     setpost(false)
   }
   return (
-  <section className=' mt-14'>
+  <section className=' mt-8'>
     <div  className=' border-t-2 border-[#212121] '>
        
        
     </div>
   <Flex className="justify-center gap-x-14 mt-3">
 <Link to="/home">
-<div className=' relative' >
+<div >
 <div className={`bg-[#bdbdbd] w-20 h-[2px] absolute top-[-17px]  left-0 }`}></div>
 <Flex className=" gap-x-2  items-center">
    <CiSignpostDuo1 />
@@ -36,7 +36,7 @@ function Post() {
 
 <Link to="/photos">
  <div  className=' relative'>
- 
+ <div className={` bg-[#bdbdbd] w-20 h-[2px] absolute top-[-17px]  left-2 }`}></div>
  <Flex className="  items-center gap-x-2">
    <SiImagej />
        <span>PHOTOS</span>
@@ -52,4 +52,5 @@ function Post() {
   )
 }
 
-export default Post
+export default Post2
+
