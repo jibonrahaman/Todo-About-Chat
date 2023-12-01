@@ -1,0 +1,6 @@
+.hello::-webkit-scrollbar  {
+    display: none;
+}
+.image-upload>input {
+    display: none;
+  }
