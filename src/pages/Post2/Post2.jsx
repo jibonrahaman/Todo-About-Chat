@@ -61,17 +61,14 @@ function Post2() {
         </div>
         <p className='border'> </p>
       </div>
-    </div><div className=' mt-2'>
-    <img src={Product4} alt={Product4} className=' mx-auto rounded-md' />
-      <div className=' mt-1'>
-        <p className='border'></p>
-        <div className='my-2'>
-        <FaRegHeart className=' text-3xl ml-6' />
-
-        </div>
-        <p className='border'> </p>
-      </div>
     </div>
+   
+    
+       </div> <div className='bg-black my-6  text-[rgb(163,155,155)] px-4 py-2 rounded-xl'>
+   <Flex className=" gap-x-4">
+    <img src={Product4} alt={Product4} className=' w-[60px] h-[60px] rounded-full' />
+    <h3 className=' text-white mt-1 text-3xl'>Jibon</h3>
+    </Flex>
     <div className=' mt-2'>
     <img src={Product4} alt={Product4} className=' mx-auto rounded-md' />
       <div className=' mt-1'>
@@ -83,6 +80,8 @@ function Post2() {
         <p className='border'> </p>
       </div>
     </div>
+   
+    
        </div>
      
 

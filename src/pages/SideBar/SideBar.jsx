@@ -6,8 +6,14 @@ import { PiFilmReelFill } from "react-icons/pi";
 import { FcDoNotInhale } from "react-icons/fc";
 import { BiSolidMessage } from "react-icons/bi";
 import { VscGitPullRequestCreate } from "react-icons/vsc";
-
+import { CiLogout } from "react-icons/ci";
+import Flex from '../../Components/Flex'
+import { useNavigate } from 'react-router-dom';
 function SideBar({className}) {
+  const navigate =useNavigate();
+  const handleLogOut = () =>{
+  navigate('/')
+  }
   return (
     <section className={`${className} `}>
      <div className=' pl-7 h-screen pt-8  bg-black text-white '>
@@ -44,10 +50,14 @@ function SideBar({className}) {
               <p>Create</p>
              </div>
 
-              <div className='flex gap-x-4 items-center '>
+              <div className='flex gap-x-4 items-center ml-4 '>
                  <p>Profile</p>
              </div> 
-                         
+
+          <Flex className=" justify-end bg-[#52522f] rounded-lg duration-500 px-4 py-3 hover:bg-[#1a1a1a]  ">
+          <CiLogout onClick={handleLogOut} className=' text-3xl  text-white ' />
+          </Flex>
+        
             </div>
         </div>
      </div>
