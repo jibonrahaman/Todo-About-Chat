@@ -4,7 +4,8 @@ import Flex from '../../Components/Flex'
 import { MdOutlineClose } from "react-icons/md";
  import '../TodoAbout/TodoAbout.css'
  import { FaUpload } from "react-icons/fa";
- import { ProgressBar } from 'react-loader-spinner'
+ import { FallingLines } from 'react-loader-spinner'
+import Post from '../PostPart/Post';
 function TodoAbout() {
   const [backdropShow,setbackdropShow] = useState(false)
   const [postImg,setpostImg]=useState(true)
@@ -29,18 +30,15 @@ function TodoAbout() {
                 </Flex>
              </Flex>
 
-             <Flex className=" items-center mt-10  gap-x-14 ">
-              <Flex className=" gap-x-3 items-center">
+             <Flex className=" items-center mt-10  gap-x-10 ">
+              <Flex className=" gap-x-5 items-center">
               <h2 className='text-white text-2xl'>posts Photo/Status</h2>
-              <ProgressBar
-                height="80"
-                width="80"
-                ariaLabel="progress-bar-loading"
-                wrapperStyle={{}}
-                wrapperClass="progress-bar-wrapper"
-                borderColor = '#F4442E'
-                barColor = '#51E5FF'
-              />
+              <FallingLines
+              color="#4fa94d"
+              width="100"
+              visible={true}
+              ariaLabel='falling-lines-loading'
+            />
               </Flex>
              <div className=' w-[520px] rounded-md px-4 py-4 bg-[#242526] '>
         <Flex className=" gap-x-2">
@@ -50,6 +48,7 @@ function TodoAbout() {
         <div className='border mt-2 border-[#37383a]'></div>
             </div>
              </Flex>
+             <Post />
              
                 {/* backdrop */}
                     {
