@@ -9,10 +9,24 @@ import { VscGitPullRequestCreate } from "react-icons/vsc";
 import { CiLogout } from "react-icons/ci";
 import Flex from '../../Components/Flex'
 import { useNavigate } from 'react-router-dom';
+import { getAuth, signOut } from 'firebase/auth';
+import { useDispatch } from 'react-redux';
+import { userLoginInfo } from '../../Components/Slices/UserSlice';
 function SideBar({className}) {
+  const auth = getAuth();
   const navigate =useNavigate();
+  const dispatch=useDispatch();
+
   const handleLogOut = () =>{
-  navigate('/')
+    signOut(auth).then(() => {
+      navigate('/')
+      dispatch(userLoginInfo(null))
+      localStorage.removeItem('userLoginInfo')
+
+  
+    }).catch((error) => {
+      // An error happened.
+    });
   }
   return (
     <section className={`${className} `}>

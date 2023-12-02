@@ -1,9 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import SideBar from '../SideBar/SideBar'
 import TodoAbout from '../TodoAbout/TodoAbout'
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 function HomePage() {
-  return (
+  const navigate=useNavigate();
+  const data =useSelector(state => state.userLoginInfo.userInfo)
+  useEffect (()=>{
+  if(!data){
+    navigate('/')
+  }
+  },[])
+    return (
     <div  >
  <div>
   <div className='flex '>

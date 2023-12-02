@@ -4,18 +4,28 @@ import { toast } from 'react-toastify';
 import { Bars } from 'react-loader-spinner'
 import { LuEye } from "react-icons/lu";
 import { LuEyeOff } from "react-icons/lu";
-
-
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, signInWithPopup, GoogleAuthProvider, updateProfile, onAuthStateChanged } from "firebase/auth";
 import { Link, useNavigate } from 'react-router-dom';
-
+import { getDatabase, ref, set } from "firebase/database";
+import { useDispatch, useSelector } from 'react-redux';
+import { userLoginInfo } from '../Components/Slices/UserSlice';
 
 const LoginReg = () => {
+  const data =useSelector(state => state.userLoginInfo.userInfo)
+  console.log(data);
+  useEffect(()=>{
+ if(data){
+  navigate('/home')
+ }
+  }, [])
+
+  const provider = new GoogleAuthProvider();
+  const db = getDatabase();
   const auth = getAuth();
  const navigate=useNavigate();
   const [loader, setLoader] = useState(false)
   const [condition, setCondition] = useState(false)
-
+const dispatch =useDispatch();
   const [email1, setemail1] = useState('')
   const [fullname, setfullname] = useState('')
   const [password1, setpassword1] = useState('')
@@ -55,28 +65,49 @@ const LoginReg = () => {
       }
     }
     if (email1 && password1 && fullname && (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email1))) {
-      createUserWithEmailAndPassword(auth, email1, password1).then(() => {
-
-      })
-        .then(() => {
+      createUserWithEmailAndPassword(auth, email1, password1).then((user) => {
+        updateProfile(auth.currentUser, {
+          displayName: "Jane Q. User", photoURL: "https://example.com/jane-q-user/profile.jpg"
+        }).then(() => {
           toast.success("registration done please verify your email")
-          sendEmailVerification(auth.currentUser)
-
           setemail1('')
           setfullname('')
           setpassword1('')
+          sendEmailVerification(auth.currentUser)
           setTimeout(() => {
             setActive(false)
-
           }, 1500)
-        })
-        .catch((error) => {
-          console.log(error.code);
+          
+        }).then(()=>{
+          
+          set(ref(db, 'users/' + user.user.uid), {
+            username: user.user.displayName,
+            email: user.user.email,
+         });
+        }).catch((error) => {
+          // An error occurred
+          // ...
+        });
+      })  .catch((error) => {
+         
           if (error.code.includes("auth/email-already-in-use")) {
             toast.error("email already used")
           }
         });
     }
+  }
+
+  const handleGoogleSignUpPop = ()=>{
+    signInWithPopup(auth, provider)
+    .then((user)=>{
+      setTimeout(()=>{
+        dispatch(userLoginInfo(user))
+        localStorage.setItem('userLoginInfo',JSON.stringify((user)))
+        navigate('/home')
+      },3000)
+    }).catch((error)=>{
+      console.log(error.code);
+    })
   }
 
   
@@ -110,7 +141,9 @@ const LoginReg = () => {
     }
   
      if(email2 && password2 &&  (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email2))){
-      signInWithEmailAndPassword(auth , email2 , password2).then(()=>{
+      signInWithEmailAndPassword(auth , email2 , password2).then((user)=>{
+        dispatch(userLoginInfo(user))
+        localStorage.setItem('userLoginInfo', JSON.stringify((user)))
         toast.success("Login")
         setLoader(true)
         setTimeout(()=>{
@@ -118,11 +151,20 @@ const LoginReg = () => {
         },2000)
       })
      }
-
-
- 
    }
-
+  
+   const handleGoogleLoginPop = ()=>{
+    signInWithPopup(auth, provider)
+    .then((user)=>{
+      setTimeout(()=>{
+        dispatch(userLoginInfo(user))
+        localStorage.setItem('userLoginInfo',JSON.stringify((user)))
+        navigate('/home')
+      },3000)
+    }).catch((error)=>{
+      console.log(error.code);
+    })
+  }
 
 
 
@@ -156,7 +198,7 @@ const LoginReg = () => {
               <h1 className='text-center text-3xl text-black font-mon font-bold pb-6'>Sign Up</h1>
               <div className='flex gap-x-4 pb-4'>
                 <div className='border border-solid border-[#ccc] rounded-lg px-1.5 py-1.5'>
-                  <FaGooglePlusG className='text-lg' />
+                  <FaGooglePlusG onClick={handleGoogleSignUpPop} className='text-lg' />
                 </div>
                 <div className='border border-solid border-[#ccc] rounded-lg px-2 py-1.5'>
                   <FaFacebookF className='text-sm' />
@@ -208,7 +250,7 @@ const LoginReg = () => {
               <h1 className=' text-center text-3xl text-black font-mon font-bold pb-6'>Sign In</h1>
               <div className='flex gap-x-4 pb-4'>
                 <div className='border border-solid border-[#ccc] rounded-lg px-1.5 py-1.5'>
-                  <FaGooglePlusG className='text-lg' />
+                  <FaGooglePlusG onClick={handleGoogleLoginPop} className='text-lg' />
                 </div>
                 <div className='border border-solid border-[#ccc] rounded-lg px-2 py-1.5'>
                   <FaFacebookF className='text-sm' />
