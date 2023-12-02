@@ -13,11 +13,7 @@ import { userLoginInfo } from '../Components/Slices/UserSlice';
 const LoginReg = () => {
   const data =useSelector(state => state.userLoginInfo.userInfo)
   console.log(data);
-  useEffect(()=>{
- if(data){
-  navigate('/home')
- }
-  }, [])
+
 
   const provider = new GoogleAuthProvider();
   const db = getDatabase();
