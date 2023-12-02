@@ -67,7 +67,8 @@ const dispatch =useDispatch();
     if (email1 && password1 && fullname && (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email1))) {
       createUserWithEmailAndPassword(auth, email1, password1).then((user) => {
         updateProfile(auth.currentUser, {
-          displayName: "Jane Q. User", photoURL: "https://example.com/jane-q-user/profile.jpg"
+          displayName: fullname,
+           photoURL: "/src/assets/user.jpg"
         }).then(() => {
           toast.success("registration done please verify your email")
           setemail1('')
