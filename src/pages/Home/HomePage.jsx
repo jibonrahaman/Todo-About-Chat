@@ -8,12 +8,15 @@ import { FaRegHandPointDown } from 'react-icons/fa'
 import { TypeAnimation } from 'react-type-animation';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { RotatingLines } from 'react-loader-spinner'
+import Flex from '../../Components/Flex'
+
 function HomePage() {
   const navigate = useNavigate();
   const data = useSelector(state => state.userLoginInfo.userInfo)
   const [verifyemail, setveryfyemail] = useState(false)
   const [loader, setloader] = useState(true)
   const auth = getAuth();
+
   onAuthStateChanged(auth, (user) => {
     console.log(user.emailVerified);
     if (user.emailVerified == true) {

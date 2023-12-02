@@ -6,15 +6,23 @@ import { MdOutlineClose } from "react-icons/md";
  import { FaUpload } from "react-icons/fa";
  import { FallingLines } from 'react-loader-spinner'
 import Post from '../PostPart/Post';
+import { ImUpload } from 'react-icons/im'
 function TodoAbout() {
   const [backdropShow,setbackdropShow] = useState(false)
   const [postImg,setpostImg]=useState(true)
+  const [ProfileImageUpload ,setProfileImageUpload] =useState(false)
+  const handleShowUpload =()=>{
+   setProfileImageUpload(true)
+  }
   return (
     <section className=' '>
         <div  className=' h-screen text-white  px-44 pt-4 ' >
                <Flex className="  items-center gap-x-20">
-                <div>
+                <div onClick={handleShowUpload} className=' relative group'>
                     <img src={Product} alt={Product} className=' w[200px] h-[200px] rounded-full' />
+                    <Flex className='w-full   h-full group-hover:bg-[rgb(0,0,0,0.41)] opacity-0 group-hover:opacity-100 duration-500 absolute top-0 left-0 rounded-full justify-center  items-center text-center cursor-pointer  '>
+            <ImUpload  className='text-2xl text-white ' />
+          </Flex>
                 </div>
                 <Flex className=' flex-col'>
                 <Flex className=" items-center gap-x-8">
@@ -100,6 +108,27 @@ function TodoAbout() {
                     }
                 {/* backdrop */}
             </div>
+
+            {
+  ProfileImageUpload &&
+  <div className=' backdrop-blur-md  h-screen   bg-signBtn w-full absolute top-0 left-0 z-10 '>
+          <div className='bg-[#777] w-1/2 mx-auto mt-16  p-5 '>
+            <h2 className='text-4xl text-white ml-40'>Upload Your Image</h2>
+
+            <div className=' relative w-[100px] mx-auto  mt-3  h-[100px] rounded-full  '>            
+           <img src="" alt="" className=" w-full h-full rounded-full border mt-3" />
+            </div>
+            <input  type="file" className='mt-3 mb-4' />
+            
+            <Flex className=" mt-4 gap-x-7">
+              <button  type='button' className='  bg-signBtn bg-blue-400 text-white px-6 py-2 duration-300 rounded-lg hover:bg-black hover:text-signBtn '>Upload </button>
+              <button onClick={()=>setProfileImageUpload(false)}  type='button' className=' bg-red-700 text-white px-6 py-2 rounded-lg hover:bg-black hover:text-red-900 '>Cancel </button>
+
+            </Flex>
+
+          </div>
+        </div>  
+}
    
     </section>
   )
