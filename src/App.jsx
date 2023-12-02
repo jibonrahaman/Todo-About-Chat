@@ -10,6 +10,7 @@ import {
 import LoginReg from './pages/LoginReg';
 import HomePage from './pages/Home/HomePage';
 import Photos from './pages/PhotosPart/Photos';
+import HomeHome from './Components/HomeHome/HomeHome';
 
 
 const router = createBrowserRouter(
@@ -20,8 +21,12 @@ const router = createBrowserRouter(
       element={<LoginReg />}>  
       </Route>
     <Route
-      path="/home"
+      path="/profile"
       element={<HomePage />}>  
+      </Route> 
+      <Route
+      path="/home"
+      element={<HomeHome />}>  
       </Route>
        <Route
       path="/photos"

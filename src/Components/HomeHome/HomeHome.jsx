@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import SideBar from '../SideBar/SideBar'
-import TodoAbout from '../TodoAbout/TodoAbout'
+
+
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import email from '../../assets/email.jpg'
@@ -9,9 +9,11 @@ import { TypeAnimation } from 'react-type-animation';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { RotatingLines } from 'react-loader-spinner'
 import Flex from '../../Components/Flex'
-import { userLoginInfo } from '../../Components/Slices/UserSlice'
-
-function HomePage() {
+import { userLoginInfo } from '../Slices/UserSlice' 
+import SideBar from '../../pages/SideBar/SideBar'
+import TodoAbout from '../../pages/TodoAbout/TodoAbout'
+import TodoAbout3 from '../TodoAbout3/TodoAbout3'
+function HomeHome() {
   const navigate = useNavigate();
   const data = useSelector(state => state.userLoginInfo.userInfo)
   const [verifyemail, setveryfyemail] = useState(false)
@@ -61,7 +63,7 @@ function HomePage() {
                   <SideBar className=" w-[17%]" />
                   <div class="border-r-[1px] border-[#212121]"></div>
                   <div className='bg-[#000000] w-[83%] '>
-                    <TodoAbout />
+                    <TodoAbout3 />
                   </div>
                 </div>
               </div>     )
@@ -110,4 +112,4 @@ function HomePage() {
   )
 }
 
-export default HomePage
+export default HomeHome

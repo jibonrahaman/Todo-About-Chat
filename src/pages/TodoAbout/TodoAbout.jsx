@@ -7,7 +7,7 @@ import { MdOutlineClose } from "react-icons/md";
  import { FallingLines } from 'react-loader-spinner'
 import Post from '../PostPart/Post';
 import { ImUpload } from 'react-icons/im'
-import { getAuth } from 'firebase/auth';
+import { getAuth, updateProfile } from 'firebase/auth';
 import { useSelector } from 'react-redux';
 import "cropperjs/dist/cropper.css";
 import { getDownloadURL, getStorage, ref, uploadString } from "firebase/storage";
@@ -20,6 +20,7 @@ function TodoAbout() {
   const storage = getStorage();
   const auth = getAuth();
   const data=useSelector(state => state.userLoginInfo.userInfo)
+  console.log(data.photoURL);
   const [image, setImage] = useState('');
   const [cropData, setCropData] = useState('');
   const cropperRef = createRef();
@@ -48,6 +49,14 @@ function TodoAbout() {
       const message4 = cropperRef.current?.cropper.getCroppedCanvas().toDataURL();
       uploadString(storageRef, message4, 'data_url').then((snapshot) => {
         console.log('Uploaded a data_url string!');
+        getDownloadURL(storageRef).then((downloadURL) => {
+          console.log('File available at', downloadURL);
+          updateProfile(auth.currentUser, {
+            photoURL: downloadURL,
+          }).then(()=>{
+            setProfileImageUpload(false)
+          })
+        });
       });
     }
   };
@@ -60,14 +69,14 @@ function TodoAbout() {
         <div  className=' h-screen text-white  px-44 pt-4 ' >
                <Flex className="  items-center gap-x-20">
                 <div onClick={handleShowUpload} className=' relative group'>
-                    <img src={Product} alt={Product} className=' w[200px] h-[200px] rounded-full' />
+                    <img src={data.photoURL} alt={data.photoURL} className=' w[200px] h-[200px] rounded-full' />
                     <Flex className='w-full   h-full group-hover:bg-[rgb(0,0,0,0.41)] opacity-0 group-hover:opacity-100 duration-500 absolute top-0 left-0 rounded-full justify-center  items-center text-center cursor-pointer  '>
             <ImUpload  className='text-2xl text-white ' />
           </Flex>
                 </div>
                 <Flex className=' flex-col'>
                 <Flex className=" items-center gap-x-8">
-                    <h2 className=' font-text text-2xl'>Jibon</h2>
+                    <h2 className=' uppercase font-bold text-2xl text-[#ecddc1]'>{data.displayName}</h2>
                     <p className=' px-4 py-2 bg-[#131313] hover:bg-[#363636] duration-300 rounded-lg text-white '>Edite Profile</p>
                     <p className=' px-4 py-2 bg-[#131313] hover:bg-[#363636] duration-300 rounded-lg text-white '>View Archive</p>
                 </Flex> 
@@ -79,75 +88,9 @@ function TodoAbout() {
                 </Flex>
              </Flex>
 
-             <Flex className=" items-center  gap-x-10 ">
-              <Flex className=" gap-x-5 items-center">
-              <h2 className='text-white text-2xl'>posts Photo/Status</h2>
-              <FallingLines
-              color="#4fa94d"
-              width="100"
-              visible={true}
-              ariaLabel='falling-lines-loading'
-            />
-              </Flex>
-             <div className=' w-[520px] rounded-md px-4 py-4 bg-[#242526] '>
-        <Flex className=" gap-x-2">
-        <img src={Product} alt={Product} className='w-[50px] h-[50px] rounded-full' />
-        <input onClick={()=>setbackdropShow(!backdropShow)} type="text" placeholder="What's your mind?" className='w-[400px] rounded-2xl px-3 hover:bg-[#4e4f50] bg-[#3a3b3c] focus:outline-none' />
-        </Flex>
-        <div className='border mt-2 border-[#37383a]'></div>
-            </div>
-             </Flex>
-             <Post />
+           
              
-                {/* backdrop */}
-                    {
-                      backdropShow && 
-                      <section className='backdrop'>
-                      <div className="absolute top-0 left-0 w-full h-screen z-10 backdrop-blur-sm flex justify-center items-center ">
-                      <div className=' bg-[#242526] px-4 py-6 relative'>
-                    <Flex className=" justify-center ">
-                      <h2 className=' text-xl'>Create Post</h2>    
-                      <MdOutlineClose onClick={()=>setbackdropShow(false)} className=' absolute top-0 right-1 text-5xl p-1 bg-slate-300 text-black'/>
-                    </Flex>
-                    <div >
-                      <Flex className="  gap-x-3 ml-3">
-                      <img src={Product} alt={Product} className='w-[60px] h-[60px] rounded-full' />
-                      <h4 className='mt-2'>Jibon</h4 >
-                      </Flex>
-                    <div className=' hello2 h-[200px]' >
-                    <textarea name="" id=""   placeholder="What's on your mind? " className=' hello bg-[#242526] outline-none w-[450px] mt-5 px-3 py-10 resize-none  '>
-                      </textarea>
-                    {
-                      postImg ?
-                      <div  onClick={()=>setpostImg(false)} className='flex gap-x-4 items-center'>
-                    <FaUpload />
-                    <p>Photo Upload</p>
-                    </div>
-                    :
-                    <div className='  ml-6  w-[400px] border p-4 border-[#323436] '>
-                    <div class="image-upload">
-              <Flex className="justify-center relative">
-              <label for="file-input">
-              <Flex className=" text-center items-center ">
-              <FaUpload />
-                <p>Add Photos</p>
-              </Flex>
-                </label>
-                <MdOutlineClose onClick={()=>setpostImg(true)}  className=' absolute top-[-15px] right-[-15px] text-xl p-1 bg-slate-300 text-black'/>
-              </Flex>
-                <input id="file-input" type="file" />
-              </div>
-                    </div>
-                    }
-                    
-                    </div>
-                    <p className=' text-center items-center mx-auto mt-3 px-5 py-1 bg-[#323436] hover:bg-[#0866ff] rounded-2xl duration-500'>post</p>
-                    </div>
-                      </div>
-                      </div>
-                    </section>
-                    }
-                {/* backdrop */}
+               
             </div>
 
             {
@@ -156,8 +99,18 @@ function TodoAbout() {
           <div className='bg-[#777] w-1/2 mx-auto mt-16  p-5 '>
             <h2 className='text-4xl text-white ml-40'>Upload Your Image</h2>
 
-            <div className=' relative w-[100px] mx-auto  mt-3  h-[100px] rounded-full  '>            
-           <img src="" alt="" className=" w-full h-full rounded-full border mt-3" />
+            <div className=' relative w-[100px] mx-auto  mt-3  h-[100px] rounded-full'>
+
+              {
+                image ?
+                <div
+            className="img-preview w-[100px] h-[100px] rounded-full overflow-hidden "
+            
+          />
+      
+        :
+        <img src={data.photoURL} alt={data.photoURL} className=" w-full h-full rounded-full border mt-3" />
+              }            
             </div>
             <input onChange={handleUploadChange}  type="file" className='mt-3 mb-4' />
            {

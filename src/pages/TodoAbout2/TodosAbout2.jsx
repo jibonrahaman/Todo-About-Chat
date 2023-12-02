@@ -14,23 +14,7 @@ function TodosAbout2() {
   return (
     <section className=' '>
         <div  className=' h-screen text-white  px-44 pt-4 ' >
-               <Flex className="  items-center gap-x-20">
-                <div>
-                    <img src={Product} alt={Product} className=' w[200px] h-[200px] rounded-full' />
-                </div>
-                <Flex className=' flex-col'>
-                <Flex className=" items-center gap-x-8">
-                    <h2 className=' font-text text-2xl'>Jibon</h2>
-                    <p className=' px-4 py-2 bg-[#131313] hover:bg-[#363636] duration-300 rounded-lg text-white '>Edite Profile</p>
-                    <p className=' px-4 py-2 bg-[#131313] hover:bg-[#363636] duration-300 rounded-lg text-white '>View Archive</p>
-                </Flex> 
-                <Flex className=" mt-3 items-center gap-x-14">
-                   <p>0 posts</p>
-                   <p>64 followers</p>
-                   <p>4 following</p>
-                </Flex>
-                </Flex>
-             </Flex>
+             
 
              {/* <Flex className=" items-center mt-4  gap-x-10 ">
               <Flex className=" gap-x-5 items-center">

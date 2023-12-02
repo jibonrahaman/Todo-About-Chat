@@ -8,7 +8,7 @@ import { BiSolidMessage } from "react-icons/bi";
 import { VscGitPullRequestCreate } from "react-icons/vsc";
 import { CiLogout } from "react-icons/ci";
 import Flex from '../../Components/Flex'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, signOut } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 import { userLoginInfo } from '../../Components/Slices/UserSlice';
@@ -34,10 +34,12 @@ function SideBar({className}) {
         <h2>InstAbout</h2>
         <div>
             <div className='flex flex-col gap-y-5 pt-12 text-xl   '>
-             <div className='flex gap-x-4 items-center hover:bg-[#1a1a1a]  px-4 py-3 rounded-lg '>
+         <Link to="/home">
+         <div className='flex gap-x-4 items-center hover:bg-[#1a1a1a]  px-4 py-3 rounded-lg '>
              <SlHome />
               <p>Home</p>
              </div>
+         </Link>
 
               <div className='flex gap-x-4 items-center hover:bg-[#1a1a1a]  px-4 py-3 rounded-lg '>
               <TbVirusSearch />
@@ -64,9 +66,11 @@ function SideBar({className}) {
               <p>Create</p>
              </div>
 
-              <div className='flex gap-x-4 items-center ml-4 '>
+            <Link to="/profile">
+            <div className='flex gap-x-4 items-center ml-4 '>
                  <p>Profile</p>
              </div> 
+            </Link>
 
           <Flex className=" justify-end bg-[#52522f] rounded-lg duration-500 px-4 py-3 hover:bg-[#1a1a1a]  ">
           <CiLogout onClick={handleLogOut} className=' text-3xl  text-white ' />
