@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { createRef, useState } from 'react'
 import Product from '../../assets/Product4.png'
 import Flex from '../../Components/Flex'
 import { MdOutlineClose } from "react-icons/md";
@@ -7,10 +7,51 @@ import { MdOutlineClose } from "react-icons/md";
  import { FallingLines } from 'react-loader-spinner'
 import Post from '../PostPart/Post';
 import { ImUpload } from 'react-icons/im'
+import { getAuth } from 'firebase/auth';
+import { useSelector } from 'react-redux';
+import "cropperjs/dist/cropper.css";
+import { getDownloadURL, getStorage, ref, uploadString } from "firebase/storage";
+import { Cropper } from 'react-cropper';
+
 function TodoAbout() {
   const [backdropShow,setbackdropShow] = useState(false)
   const [postImg,setpostImg]=useState(true)
   const [ProfileImageUpload ,setProfileImageUpload] =useState(false)
+  const storage = getStorage();
+  const auth = getAuth();
+  const data=useSelector(state => state.userLoginInfo.userInfo)
+  const [image, setImage] = useState('');
+  const [cropData, setCropData] = useState('');
+  const cropperRef = createRef();
+  const handleUploadChange =(e)=>{
+    e.preventDefault();
+    let files;
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImage(reader.result);
+    };
+    reader.readAsDataURL(files[0]);
+  }
+
+  const getCropData = () => {
+    if (typeof cropperRef.current?.cropper !== "undefined") {
+      setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
+
+      const storageRef = ref(storage, auth.currentUser.uid);
+      const message4 = cropperRef.current?.cropper.getCroppedCanvas().toDataURL();
+      uploadString(storageRef, message4, 'data_url').then((snapshot) => {
+        console.log('Uploaded a data_url string!');
+      });
+    }
+  };
+
   const handleShowUpload =()=>{
    setProfileImageUpload(true)
   }
@@ -111,17 +152,38 @@ function TodoAbout() {
 
             {
   ProfileImageUpload &&
-  <div className=' backdrop-blur-md  h-screen   bg-signBtn w-full absolute top-0 left-0 z-10 '>
+  <div className=' backdrop-blur-md   h-screen   bg-signBtn w-full absolute top-0 left-0 z-20 '>
           <div className='bg-[#777] w-1/2 mx-auto mt-16  p-5 '>
             <h2 className='text-4xl text-white ml-40'>Upload Your Image</h2>
 
             <div className=' relative w-[100px] mx-auto  mt-3  h-[100px] rounded-full  '>            
            <img src="" alt="" className=" w-full h-full rounded-full border mt-3" />
             </div>
-            <input  type="file" className='mt-3 mb-4' />
+            <input onChange={handleUploadChange}  type="file" className='mt-3 mb-4' />
+           {
+          
+              image &&
+            <Cropper
+            ref={cropperRef}
+            style={{ height: 300, width: "100%" }}
+            zoomTo={0.5}
+            initialAspectRatio={1}
+            preview=".img-preview"
+            src={image}
+            viewMode={1}
+            minCropBoxHeight={10}
+            minCropBoxWidth={10}
+            background={false}
+            responsive={true}
+            autoCropArea={1}
+            checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
+            guides={true}
+          />
+      
+           }
             
             <Flex className=" mt-4 gap-x-7">
-              <button  type='button' className='  bg-signBtn bg-blue-400 text-white px-6 py-2 duration-300 rounded-lg hover:bg-black hover:text-signBtn '>Upload </button>
+              <button onClick={getCropData}  type='button' className='  bg-signBtn bg-blue-400 text-white px-6 py-2 duration-300 rounded-lg hover:bg-black hover:text-signBtn '>Upload </button>
               <button onClick={()=>setProfileImageUpload(false)}  type='button' className=' bg-red-700 text-white px-6 py-2 rounded-lg hover:bg-black hover:text-red-900 '>Cancel </button>
 
             </Flex>
