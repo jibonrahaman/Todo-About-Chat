@@ -8,6 +8,7 @@ import Product4 from '../../assets/Product4.png'
 import { FaRegHeart } from "react-icons/fa6";
 import { useSelector } from 'react-redux';
 import { getDatabase, onValue, ref } from 'firebase/database';
+import { MdPublic } from "react-icons/md";
 
 
 function Post() {
@@ -30,19 +31,14 @@ function Post() {
     onValue(postsRef, (snapshot) => {
       let arr = []
       snapshot.forEach((item) => {
-      
-         arr.push({...item.val()})
-     
-    
-      })
+       arr.push({...item.val()})
+           })
       setShowPost(arr)
     })
   }, [])
   return (
   <section className=' mt-8'>
-    <div  className=' border-t-2 border-[#212121] '>
-       
-       
+    <div  className=' border-t-2 border-[#212121]'>       
     </div>
   <Flex className="justify-center gap-x-14 mt-2">
 <Link to="/home">
@@ -58,9 +54,16 @@ function Post() {
      {
       ShowPost.map((item)=>{
          return <div className='bg-black my-6  text-[rgb(163,155,155)] px-4 py-2 rounded-xl'>
-        <Flex className=" gap-x-4">
-         <img src={data.photoURL} alt={data.photoURL} className=' w-[60px] h-[60px] rounded-full' />
+        <Flex >
+     <Flex className=" gap-x-4">
+     <img src={data.photoURL} alt={data.photoURL} className=' w-[60px] h-[60px] rounded-full' />
          <h3 className=' text-white mt-1 text-3xl'>{data.displayName}</h3>
+         <Flex>
+         <MdPublic />
+   
+         </Flex>
+     </Flex>
+
          </Flex>
          <div className=' my-2'>
            <h2 className='mt-7 mb-3 text-white'>

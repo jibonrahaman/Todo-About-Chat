@@ -4,7 +4,7 @@ import Flex from '../../Components/Flex'
 import { MdOutlineClose } from "react-icons/md";
 import '../../Components/TodoAbout3/TodoAbout3.css'
 import { FaLeaf, FaUpload } from "react-icons/fa";
-import { FallingLines } from 'react-loader-spinner'
+import { Dna, FallingLines } from 'react-loader-spinner'
 import Post from '../../pages/PostPart/Post';
 import { ImUpload } from 'react-icons/im'
 import { getAuth, updateProfile } from 'firebase/auth';
@@ -15,6 +15,8 @@ import { Cropper } from 'react-cropper';
 import { getDatabase, onValue, push, ref, set } from 'firebase/database'
 // import {v4} from 'UUID'
 // import {imgeDb} from '../../pages/Firebase/Firebase'
+import { v4 as uuidv4 } from 'uuid';
+
 function TodoAbout3() {
     const [backdropShow, setbackdropShow] = useState(false)
     const [postImg, setpostImg] = useState(true)
@@ -44,24 +46,32 @@ function TodoAbout3() {
 //       });
 //   });
 //    }
-   
+    const [loader , setloader]=useState(false)
  const handleimgChange = (e)=>{
     setProfileImageUpload(e.target.files[0]);
  }
    const handleSubmit =()=>{
-    const storageRef = refs(storage, 'child');
+  setloader(true)
+    const storageRef = refs(storage, uuidv4());
     uploadBytes(storageRef, ProfileImageUpload).then((snapshot) => {
       getDownloadURL(storageRef).then((downloadURL) => {
         set(push(ref(db, 'posts/')), {
             text:task,
+            postsendid:data.uid,
+            postsendname:data.displayName,
           img:ProfileImageUpload != null &&  downloadURL,
        date: `${new Date().getFullYear()} - ${new Date().getMonth() + 1} - ${new Date().getDate()}, ${new Date().getHours()} : ${new Date().getMinutes()} : ${new Date().getSeconds()} `
         })
       });
+      
     }).then(()=>{
+       setTimeout(()=>{
+        setloader(false)
+        setProfileImageUpload(null)
         setbackdropShow(false)
        setTask('')
-       setpostImg(true)
+       },1500)
+       
     })
    
     // const storageRef = refs(storage, ProfileImageUpload.name);
@@ -89,8 +99,6 @@ function TodoAbout3() {
     return (
         <section className=' '>
             <div className=' h-screen text-white  px-16 pt-4 ' >
-
-
                 <Flex className=" items-center  gap-x-10 ">
                     <Flex className=" gap-x-5 items-center">
                         <h2 className='text-white text-2xl'>posts Photo/Status</h2>
@@ -154,7 +162,25 @@ function TodoAbout3() {
                                         }
 
                                     </div>
-                                    <p onClick={handleSubmit} className=' text-center items-center mx-auto mt-3 px-5 py-1 bg-[#323436] hover:bg-[#0866ff] rounded-2xl duration-500'>post</p>
+                                   <div className=' relative'>
+                                   {
+                                        loader ?           
+                                      <p className=' absolute top-[-42px]  left-[154px]'>
+                                          <Dna
+                                                visible={true}
+                                                  height="80"
+                                                width="80"
+                                                ariaLabel="dna-loading"
+                                                wrapperStyle={{}}
+                                                wrapperClass="dna-wrapper"
+                                                />
+                                      </p>
+                                           :
+                                           
+                                              <p onClick={handleSubmit} className=' text-center items-center mx-auto mt-3 px-5 py-1 bg-[#323436] hover:bg-[#0866ff] rounded-2xl duration-500'>post</p>  
+                                            }
+                                   </div>
+                                 
                                 </div>
                             </div>
                         </div>
