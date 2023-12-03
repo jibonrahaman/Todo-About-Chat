@@ -9,7 +9,7 @@ import { FaRegHeart } from "react-icons/fa6";
 import { useSelector } from 'react-redux';
 import { getDatabase, onValue, ref } from 'firebase/database';
 import { MdPublic } from "react-icons/md";
-
+import moment from 'moment'
 
 function Post() {
   const [post,setpost]=useState(false);
@@ -31,7 +31,10 @@ function Post() {
     onValue(postsRef, (snapshot) => {
       let arr = []
       snapshot.forEach((item) => {
-       arr.push({...item.val()})
+       if(data.uid == item.val().postsendid){
+         arr.push({...item.val()})
+       }
+     
            })
       setShowPost(arr)
     })
@@ -54,13 +57,17 @@ function Post() {
      {
       ShowPost.map((item)=>{
          return <div className='bg-black my-6  text-[rgb(163,155,155)] px-4 py-2 rounded-xl'>
-        <Flex >
-     <Flex className=" gap-x-4">
+        <Flex className=" " >
+     <Flex className=" items-center gap-x-4 ">
      <img src={data.photoURL} alt={data.photoURL} className=' w-[60px] h-[60px] rounded-full' />
          <h3 className=' text-white mt-1 text-3xl'>{data.displayName}</h3>
-         <Flex>
+         <Flex className=" items-center gap-x-1 text-white">
          <MdPublic />
-   
+    <p>
+      {
+        moment(item.date , "YYYYMMDD hh:mm:ss a").fromNow()
+      }
+    </p>
          </Flex>
      </Flex>
 
@@ -76,8 +83,7 @@ function Post() {
              <p className='border'></p>
              <div className='my-2'>
              <FaRegHeart className=' text-3xl ml-6' />
-     
-             </div>
+              </div>
              <p className='border'> </p>
            </div>
          </div>
