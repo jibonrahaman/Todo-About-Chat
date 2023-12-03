@@ -21,7 +21,6 @@ function HomeHome() {
   const auth = getAuth();
  const dispatch=useDispatch();
   onAuthStateChanged(auth, (user) => {
-    console.log(user.emailVerified);
     if (user.emailVerified ) {
       setveryfyemail(true)
     }

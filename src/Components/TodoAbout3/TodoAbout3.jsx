@@ -1,26 +1,91 @@
-import React, { createRef, useState } from 'react'
+import React, { createRef, useEffect, useState } from 'react'
 import Product from '../../assets/Product4.png'
 import Flex from '../../Components/Flex'
 import { MdOutlineClose } from "react-icons/md";
 import '../../Components/TodoAbout3/TodoAbout3.css'
-import { FaUpload } from "react-icons/fa";
+import { FaLeaf, FaUpload } from "react-icons/fa";
 import { FallingLines } from 'react-loader-spinner'
 import Post from '../../pages/PostPart/Post';
 import { ImUpload } from 'react-icons/im'
 import { getAuth, updateProfile } from 'firebase/auth';
 import { useSelector } from 'react-redux';
 import "cropperjs/dist/cropper.css";
-import { getDownloadURL, getStorage, ref, uploadString } from "firebase/storage";
+import { getDownloadURL, getStorage, ref as refs, uploadBytes, uploadString } from "firebase/storage";
 import { Cropper } from 'react-cropper';
-
+import { getDatabase, onValue, push, ref, set } from 'firebase/database'
+// import {v4} from 'UUID'
+// import {imgeDb} from '../../pages/Firebase/Firebase'
 function TodoAbout3() {
     const [backdropShow, setbackdropShow] = useState(false)
     const [postImg, setpostImg] = useState(true)
-    const [ProfileImageUpload, setProfileImageUpload] = useState(false)
+    const [ProfileImageUpload, setProfileImageUpload] = useState(null)
     const storage = getStorage();
+    const db = getDatabase();
     const auth = getAuth();
     const data = useSelector(state => state.userLoginInfo.userInfo)
+    const [task,setTask] = useState('')
+    const [photo,setphoto]=useState('')
+    const handlePostChange = (e)=>{
+        setTask(e.target.value);
+        console.log(e.target.value);
+    }
+    
+//    const handleImgPostChnage =(e) =>{
+//  console.log(e.target.files[0]);
+//  const storageRef = refs(storage, 'some-child');
+//  uploadBytes(storageRef, e.target.files[0]).then((snapshot) => {
+//     getDownloadURL(storageRef).then((downloadURL) => {
+//         console.log('File available at', downloadURL);
+//         set(push(ref(db, 'post/')), {
+//             img:downloadURL,
+//             // date: `${new Date().getFullYear()} - ${new Date().getMonth() + 1} - ${new Date().getDate()}, ${new Date().getHours()} : ${new Date().getMinutes()} : ${new Date().getSeconds()} `,
+            
+//           })
+//       });
+//   });
+//    }
    
+ const handleimgChange = (e)=>{
+    setProfileImageUpload(e.target.files[0]);
+ }
+   const handleSubmit =()=>{
+    const storageRef = refs(storage, 'child');
+    uploadBytes(storageRef, ProfileImageUpload).then((snapshot) => {
+      getDownloadURL(storageRef).then((downloadURL) => {
+        set(push(ref(db, 'posts/')), {
+            text:task,
+          img:ProfileImageUpload != null &&  downloadURL,
+       date: `${new Date().getFullYear()} - ${new Date().getMonth() + 1} - ${new Date().getDate()}, ${new Date().getHours()} : ${new Date().getMinutes()} : ${new Date().getSeconds()} `
+        })
+      });
+    }).then(()=>{
+        setbackdropShow(false)
+       setTask('')
+       setpostImg(true)
+    })
+   
+    // const storageRef = refs(storage, ProfileImageUpload.name);
+    // uploadString(storageRef,ProfileImageUpload ).then((snapshot) => {
+    //     console.log('Uploaded a data_url string!');
+    //     getDownloadURL(storageRef ).then((downloadURL) => {
+    //       console.log('File available at', downloadURL);
+         
+    //     });
+    //   });
+    // const imgRef =ref(imgeDb, `files/${v4()}`)
+    // uploadBytes(imgRef,ProfileImageUpload).then((snapshot)=>{
+    
+    // })
+    // set(push(ref(db, 'post/')), {
+    //     text: task,
+    //     img:photo,
+    //     // date: `${new Date().getFullYear()} - ${new Date().getMonth() + 1} - ${new Date().getDate()}, ${new Date().getHours()} : ${new Date().getMinutes()} : ${new Date().getSeconds()} `,
+        
+    //   })
+   }
+
+
+
     return (
         <section className=' '>
             <div className=' h-screen text-white  px-16 pt-4 ' >
@@ -57,12 +122,12 @@ function TodoAbout3() {
                                     <MdOutlineClose onClick={() => setbackdropShow(false)} className=' absolute top-0 right-1 text-5xl p-1 bg-slate-300 text-black' />
                                 </Flex>
                                 <div >
-                                    <Flex className="  gap-x-3 ml-3">
+                                    <Flex className="  gap-x-5 ml-3">
                                         <img src={data.photoURL} alt={data.photoURL} className='w-[60px] h-[60px] rounded-full' />
-                                        <h4 className='mt-2'>Jibon</h4 >
+                                        <h4 className='mt-2 text-xl'>{data.displayName}</h4 >
                                     </Flex>
                                     <div className=' hello2 h-[200px]' >
-                                        <textarea name="" id="" placeholder="What's on your mind? " className=' hello bg-[#242526] outline-none w-[450px] mt-5 px-3 py-10 resize-none  '>
+                                        <textarea onChange={handlePostChange} value={task}  name="" id="" placeholder="What's on your mind? " className=' hello bg-[#242526] outline-none w-[450px] mt-5 px-3 py-10 resize-none  '>
                                         </textarea>
                                         {
                                             postImg ?
@@ -74,21 +139,22 @@ function TodoAbout3() {
                                                 <div className='  ml-6  w-[400px] border p-4 border-[#323436] '>
                                                     <div class="image-upload">
                                                         <Flex className="justify-center relative">
-                                                            <label for="file-input">
+                                                            <label  >
                                                                 <Flex className=" text-center items-center ">
+                                                                    <input onChange={handleimgChange} type="file" />
                                                                     <FaUpload />
                                                                     <p>Add Photos</p>
                                                                 </Flex>
                                                             </label>
                                                             <MdOutlineClose onClick={() => setpostImg(true)} className=' absolute top-[-15px] right-[-15px] text-xl p-1 bg-slate-300 text-black' />
                                                         </Flex>
-                                                        <input id="file-input" type="file" />
+                                                        {/* <input id="file-input" type="file" /> */}
                                                     </div>
                                                 </div>
                                         }
 
                                     </div>
-                                    <p className=' text-center items-center mx-auto mt-3 px-5 py-1 bg-[#323436] hover:bg-[#0866ff] rounded-2xl duration-500'>post</p>
+                                    <p onClick={handleSubmit} className=' text-center items-center mx-auto mt-3 px-5 py-1 bg-[#323436] hover:bg-[#0866ff] rounded-2xl duration-500'>post</p>
                                 </div>
                             </div>
                         </div>
