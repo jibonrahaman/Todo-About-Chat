@@ -12,7 +12,7 @@ import Flex from '../../Components/Flex'
 import { userLoginInfo } from '../../Components/Slices/UserSlice'
 
 function HomePage() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const data = useSelector(state => state.userLoginInfo.userInfo)
   const [verifyemail, setveryfyemail] = useState(false)
   const [loader, setloader] = useState(true)
