@@ -43,7 +43,7 @@ function Post() {
   }, [])
 
   // const handlePostEdit=()=>{
-  //   console.log(item);
+  //   console.log("jfj");
   // }
   // const handlePostRemove =()=>{
   //   console.log("ff");
@@ -64,47 +64,47 @@ function Post() {
             <div className='bg-white px-6 mt-3 rounded-md w-[1100px]   overflow-y-scroll h-[500px]'>
               <Flex className=" flex-col ">
                 {
-                  ShowPost.map((item,index) => {
-                    return <div key={index} className='bg-black group relative my-6 px-10  text-[rgb(163,155,155)]   py-2 rounded-xl'>
+                  ShowPost.map((item,index) => (
+                    <div key={index}>
+                      <div  className='bg-black group relative my-6 px-10  text-[rgb(163,155,155)]   py-2 rounded-xl'>
 
-          {/* <Flex className="text-3xl absolute top-4   right-[50px] gap-x-8   text-[#00ffff]">  
-        <MdEdit onClick={handlePostEdit} className='group-hover:bg-white duration-700 group-hover:text-black w-10 h-10 p-2  rounded-full' />
+            {/* <Flex className="text-3xl absolute top-4   right-[50px] gap-x-8   text-[#00ffff]">  
+            <MdEdit onClick={handlePostEdit} className='group-hover:bg-white duration-700 group-hover:text-black w-10 h-10 p-2  rounded-full' />
+             <RiDeleteBin5Fill onClick={handlePostRemove}  className='group-hover:bg-white duration-700 group-hover:text-black w-10 h-10 p-2  rounded-full'/>
+              </Flex> */}
 
-                      <RiDeleteBin5Fill onClick={handlePostRemove}  className='group-hover:bg-white duration-700 group-hover:text-black w-10 h-10 p-2  rounded-full'/>
-                      
-                      </Flex> */}
-
-                      <Flex className=" " >
-                        <Flex className=" items-center gap-x-4 ">
-                          <img src={data.photoURL} alt={data.photoURL} className=' w-[60px] h-[60px] rounded-full' />
-                          <h3 className=' text-white mt-1 text-3xl'>{data.displayName}</h3>
-                          <Flex className=" items-center gap-x-1 text-white">
-                            <MdPublic />
-                            <p>
-                              {
-                                moment(item.date, "YYYYMMDD hh:mm:ss a").fromNow()
-                              }
-                            </p>
-                          </Flex>
-                        </Flex>
-                      </Flex>
-                      <div className=' my-2'>
-                        <h2 className='mt-7 mb-3 text-white'>
-                          {
-                            item.text
-                          }
-                        </h2>
-                        <img src={item.img} alt={item.img} className=' mx-auto mb-4' />
-                        <div className=' my-2'>
-                          <p className='border'></p>
-                          <div className='my-2'>
-                            <FaRegHeart className=' text-3xl ml-6' />
-                          </div>
-                          <p className='border'> </p>
-                        </div>
-                      </div>
-                    </div>
-                  })
+            <Flex className=" " >
+              <Flex className=" items-center gap-x-4 ">
+                <img src={data.photoURL} alt={data.photoURL} className=' w-[60px] h-[60px] rounded-full' />
+                <h3 className=' text-white mt-1 text-3xl'>{data.displayName}</h3>
+                <Flex className=" items-center gap-x-1 text-white">
+                  <MdPublic />
+                  <p>
+                    {
+                      moment(item.date, "YYYYMMDD hh:mm:ss a").fromNow()
+                    }
+                  </p>
+                </Flex>
+              </Flex>
+            </Flex>
+            <div className=' my-2'>
+              <h2 className='mt-7 mb-3 text-white'>
+                {
+                  item.text
+                }
+              </h2>
+              <img src={item.img} alt={item.img} className=' mx-auto mb-4' />
+              <div className=' my-2'>
+                <p className='border'></p>
+                <div className='my-2'>
+                  <FaRegHeart className=' text-3xl ml-6' />
+                </div>
+                <p className='border'> </p>
+              </div>
+            </div>
+          </div>
+                  </div>
+                  ))
                 }
               </Flex>
             </div>

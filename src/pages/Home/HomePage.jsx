@@ -12,11 +12,11 @@ import Flex from '../../Components/Flex'
 import { userLoginInfo } from '../../Components/Slices/UserSlice'
 
 function HomePage() {
-  const navigate = useNavigate()
-  const data = useSelector(state => state.userLoginInfo.userInfo)
-  const [verifyemail, setveryfyemail] = useState(false)
-  const [loader, setloader] = useState(true)
-  const auth = getAuth();
+  const navigate =useNavigate()
+  const data =useSelector(state => state.userLoginInfo.userInfo)
+  const [verifyemail, setveryfyemail] =useState(false)
+  const [loader, setloader] =useState(true)
+  const auth =getAuth();
  const dispatch=useDispatch();
   onAuthStateChanged(auth, (user) => {
     console.log(user.emailVerified);
